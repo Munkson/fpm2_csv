@@ -19,6 +19,7 @@
 <xsl:stylesheet version="1.0"
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform" > 
  <xsl:output method="text" encoding="UTF-8" disable-output-escaping="yes"/>
+ <xsl:variable name="quote" >&quot;</xsl:variable><!-- Variable definition of double-quote. To be referred to as $quote afterward -->
  
  <xsl:template match="FPM"> 
     <xsl:apply-templates/>
@@ -31,6 +32,32 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform" >
        Column definition: category,title,user,password,url,notes
   -->
   <xsl:template match="PasswordItem"> 
- <xsl:value-of select="category"/>,<xsl:value-of select="title"/>,<xsl:value-of select="user"/>,<xsl:value-of select="password"/>,<xsl:value-of select="url"/>,"<xsl:value-of select="notes"/>"<xsl:text disable-output-escaping = "yes" >&#10;</xsl:text>
-  </xsl:template> 
+    <xsl:value-of select="category"/>,<xsl:value-of select="title"/>,<xsl:value-of select="user"/>,<xsl:value-of select="password"/>,<xsl:value-of select="url"/>,<!-- notes tag item output with double-quotation escaped.
+--><xsl:call-template name="csvitemout" >
+    <xsl:with-param name="csvitem" select="notes"/>
+</xsl:call-template><!-- end of notes tag item output
+ --><xsl:text disable-output-escaping = "yes" >&#10;</xsl:text>
+</xsl:template>
+
+<!-- if double quotation is needed, enclose the item with the double quotes -->
+<xsl:template name="csvitemout" match="*">
+  <xsl:param name="csvitem"></xsl:param>
+  <xsl:choose>
+    <xsl:when test="contains($csvitem, $quote)">&quot;<xsl:call-template name="csvquote" ><xsl:with-param name="colitem" select="$csvitem"/></xsl:call-template>&quot;</xsl:when>
+    <xsl:when test="contains($csvitem, ',')">&quot;<xsl:value-of select="$csvitem"/>&quot;</xsl:when>
+    <xsl:when test="contains($csvitem, '&#10;')">&quot;<xsl:value-of select="$csvitem"/>&quot;</xsl:when>
+<xsl:otherwise><xsl:value-of select="$csvitem"/></xsl:otherwise>
+</xsl:choose>
+</xsl:template>
+
+<!-- output with double quote escaping -->
+<xsl:template name="csvquote">
+    <xsl:param name="colitem"></xsl:param>
+    <xsl:choose>
+    <xsl:when test="contains($colitem, $quote)">
+      <xsl:value-of select="substring-before($colitem, $quote)"/>&quot;&quot;<xsl:call-template name="csvquote" ><xsl:with-param name="colitem" select="substring-after($colitem, $quote)"/></xsl:call-template><!--
+    --></xsl:when>
+    <xsl:otherwise><xsl:value-of select="$colitem"/></xsl:otherwise>
+    </xsl:choose>
+</xsl:template> 
 </xsl:stylesheet>
