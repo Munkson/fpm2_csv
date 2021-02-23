@@ -2,8 +2,8 @@
 
 ## What is fpm2_csv ?
 
-XML to CSV data format converter dedicated to the specific format of the export files from Figaro¡­s Password Manager 2.
-Figaro¡­s Password Manager 2 (fpm2) is GTK-based application to manage IDs and passwords of many sites.
+XML to CSV data format converter dedicated to the specific format of the export files from Figaro's Password Manager 2.
+Figaro's Password Manager 2 (fpm2) is GTK-based application to manage IDs and passwords of many sites.
 
 ## Usage
 

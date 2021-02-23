@@ -31,11 +31,26 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform" >
   <!-- 
        Column definition: category,title,user,password,url,notes
   -->
-  <xsl:template match="PasswordItem"> 
-    <xsl:value-of select="category"/>,<xsl:value-of select="title"/>,<xsl:value-of select="user"/>,<xsl:value-of select="password"/>,<xsl:value-of select="url"/>,<!-- notes tag item output with double-quotation escaped.
---><xsl:call-template name="csvitemout" >
+  <xsl:template match="PasswordItem">
+    <!-- category -->
+    <xsl:call-template name="csvitemout" ><!-- category tag item output with double-quotation escaped. -->
+    <xsl:with-param name="csvitem" select="category"/>
+    </xsl:call-template>,<!-- title --><xsl:call-template name="csvitemout" >
+    <!-- title tag item output with double-quotation escaped. -->
+    <xsl:with-param name="csvitem" select="title"/>
+    </xsl:call-template>,<!-- user --><xsl:call-template name="csvitemout" >
+    <!-- user tag item output with double-quotation escaped. -->
+    <xsl:with-param name="csvitem" select="user"/>
+    </xsl:call-template>,<!-- password --><xsl:call-template name="csvitemout" >
+    <!-- password tag item output with double-quotation escaped. -->
+    <xsl:with-param name="csvitem" select="password"/>
+    </xsl:call-template>,<!-- url --><xsl:call-template name="csvitemout" >
+    <!-- url tag item output with double-quotation escaped. -->
+    <xsl:with-param name="csvitem" select="url"/>
+</xsl:call-template>,<!-- notes --><xsl:call-template name="csvitemout" >
+<!-- notes tag item output with double-quotation escaped. -->
     <xsl:with-param name="csvitem" select="notes"/>
-</xsl:call-template><!-- end of notes tag item output
+</xsl:call-template><!-- end of  item output
  --><xsl:text disable-output-escaping = "yes" >&#10;</xsl:text>
 </xsl:template>
 
